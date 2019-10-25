@@ -69,10 +69,10 @@ fig.update_layout(
             lat=46.227638,
             lon=2.213749
         ),
-        zoom=4.5
+        zoom=5
     )
 )
-fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token)
+fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
@@ -130,7 +130,7 @@ def update_map_figure(input_value):
             lat=46.227638,
             lon=2.213749
         ),
-        zoom=4.5
+        zoom=5
         )
     )
     fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token)
