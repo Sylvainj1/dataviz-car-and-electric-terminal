@@ -1,0 +1,72 @@
+name;battery;seats;acceleration;topspeed;range;efficiency;fastcharge;price
+Lightyear One ;60.0;5;8.0;150;580;10.3;550;149.99
+Hyundai IONIQ Electric;38.3;5;9.7;165;265;14.5;230;34.9
+Tesla Model 3 Standard Range Plus;55.0;5;5.6;225;340;14.7;540;46.77
+Tesla Model 3 Standard Range;55.0;5;5.9;210;310;14.8;540;43.5
+Sono Sion ;35.0;5;9.0;140;225;15.6;270;25.5
+Tesla Model 3 Long Range Dual Motor;75.0;5;4.6;233;475;15.6;990;54.77
+Mini Cooper SE ;32.6;4;7.3;150;185;15.6;270;32.5
+Smart EQ fortwo coupe;17.6;2;11.6;130;105;15.9;N/A;22.0
+Honda e ;35.5;4;9.5;145;200;16.0;270;33.85
+Honda e Advance;35.5;4;8.3;145;200;16.0;270;36.85
+Hyundai Kona Electric 39 kWh;42.0;5;9.9;155;245;16.0;200;34.4
+Peugeot e-208 ;50.0;5;8.1;150;295;16.1;440;30.45
+Citroen C-Zero ;16.0;4;15.9;130;90;16.1;180;21.8
+Peugeot iOn ;16.0;4;15.9;130;90;16.1;180;21.8
+BMW i3 120 Ah;42.2;4;7.3;150;235;16.1;270;38.0
+Volkswagen e-Up! ;36.8;4;11.9;130;200;16.2;170;21.975
+Skoda CITIGOe iV ;36.8;4;12.3;130;200;16.2;170;20.95
+SEAT Mii Electric ;36.8;4;12.0;130;200;16.2;170;20.65
+Hyundai Kona Electric 64 kWh;67.1;5;7.9;167;395;16.2;370;41.4
+Renault Zoe ZE50 R110;55.0;5;11.4;135;320;16.3;240;31.99
+Renault Zoe ZE50 R135;55.0;5;9.5;135;320;16.3;240;33.99
+Kia e-Niro 39 kWh;42.0;5;9.8;155;240;16.3;230;35.29
+Nissan Leaf ;40.0;5;7.9;144;220;16.4;230;36.8
+Volkswagen ID.3 Standard Range;48.0;5;8.0;160;275;16.4;260;30.0
+Opel Corsa-e ;50.0;5;8.1;150;290;16.4;430;29.9
+Tesla Model 3 Long Range Performance;75.0;5;3.4;261;450;16.4;940;58.77
+BMW i3s 120 Ah;42.2;4;6.9;160;230;16.5;260;41.6
+Polestar 2 ;78.0;5;4.7;250;450;16.7;670;58.8
+Opel Ampera-e ;60.0;5;7.3;150;345;16.8;220;42.99
+Volkswagen ID.3 Mid Range;62.0;5;7.0;160;345;16.8;480;37.0
+Tesla Model Y Long Range;75.0;7;5.8;209;440;16.8;610;56.0
+Volkswagen e-Golf ;35.8;5;9.6;150;190;16.8;220;31.9
+DS 3 Crossback E-Tense;50.0;5;8.7;150;280;17.0;420;39.39
+Nissan Leaf e+;62.0;5;7.3;157;330;17.0;390;44.7
+Kia e-Soul 39 kWh;42.0;5;9.6;156;230;17.0;220;33.99
+SEAT el-Born ;62.0;4;7.0;180;340;17.1;470;37.5
+Kia e-Niro 64 kWh;67.1;5;7.8;167;375;17.1;350;39.09
+Volkswagen ID.3 Long Range;82.0;5;5.5;180;450;17.1;550;45.0
+Mercedes EQA ;60.0;5;5.0;200;350;17.1;440;40.0
+Peugeot e-2008 SUV ;50.0;5;9.0;150;275;17.3;410;38.0
+Kia e-Soul 64 kWh;67.1;5;7.9;167;370;17.3;350;37.79
+Tesla Model Y Long Range Dual Motor;75.0;7;5.1;217;425;17.4;590;60.0
+Smart EQ fortwo cabrio;17.6;2;11.9;130;95;17.6;N/A;25.5
+Tesla Model S Long Range;100.0;5;3.8;250;525;18.1;580;86.8
+Skoda Vision IV ;83.0;4;5.9;180;450;18.4;570;35.0
+Tesla Model Y Long Range Performance;75.0;7;3.7;241;400;18.5;560;68.0
+Smart EQ forfour ;17.6;4;12.7;130;90;18.6;N/A;23.0
+Tesla Model S Performance;100.0;5;2.6;250;510;18.6;560;102.7
+Renault Kangoo Maxi ZE 33;33.0;5;22.4;130;165;18.8;N/A;38.0
+MG ZS EV;44.5;5;8.5;140;230;19.3;260;30.0
+Porsche Taycan 4S;79.2;4;4.0;250;365;19.5;730;N/A
+Audi Q4 e-tron ;83.0;5;6.3;180;425;19.5;540;55.0
+Audi e-tron GT ;93.4;4;3.5;240;425;19.7;850;125.0
+Porsche Taycan 4S Plus;93.4;4;4.0;250;425;19.7;850;N/A
+Nissan e-NV200 Evalia ;40.0;7;14.0;123;190;20.0;190;43.433
+Volvo XC40 P8 AWD Recharge;78.0;5;4.9;180;375;20.0;470;59.0
+Porsche Taycan Turbo;93.4;4;3.2;260;415;20.2;830;152.136
+Tesla Roadster ;200.0;4;2.1;410;970;20.6;920;215.0
+Tesla Model X Long Range;100.0;7;4.6;250;460;20.7;500;91.7
+Tesla Model X Performance;100.0;7;2.9;250;445;21.3;490;107.6
+Lucid Air ;75.0;5;5.0;225;350;21.4;520;75.0
+BMW iX3 ;75.0;5;5.0;200;350;21.4;520;70.0
+Porsche Taycan Turbo S;93.4;4;2.8;260;390;21.5;780;185.456
+Mercedes EQC 400 4MATIC;85.0;5;5.1;180;360;22.2;430;71.281
+Porsche Taycan Cross Turismo ;96.0;4;3.5;250;400;22.5;730;150.0
+Jaguar I-Pace ;90.0;5;4.8;200;370;22.9;350;79.45
+Audi e-tron 50 quattro;71.0;5;7.0;190;275;22.9;410;70.0
+Audi e-tron 55 quattro;95.0;5;5.7;200;360;23.2;600;80.9
+Audi e-tron Sportback ;95.0;5;5.5;200;360;23.2;580;85.0
+Byton M-Byte 72 kWh;80.0;5;7.5;190;310;23.2;370;53.5
+Byton M-Byte 95 kWh;105.0;5;5.5;190;400;23.8;520;64.0
