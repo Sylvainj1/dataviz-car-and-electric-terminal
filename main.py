@@ -1,4 +1,5 @@
 # -*coding:utf8 *-
+token = open("mapbox_token").read() 
 import plotly_express as px
 import plotly
 import plotly.graph_objects as go
@@ -9,7 +10,6 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 import pandas as pd
-
 
 
 def create_df_borne(filename):
@@ -28,6 +28,7 @@ def create_df_borne(filename):
 
         borne_dataframe["Ylatitude"] = lat
         borne_dataframe["Xlongitude"] = lon
+        borne_dataframe = borne_dataframe.rename(columns={"Puissance délivrée":"puiss_max"})
         return borne_dataframe
     
     if filename == "irve_tesla.csv":
@@ -44,17 +45,34 @@ def create_df_borne(filename):
 
 first_borne_data = create_df_borne("bornedata.csv")
 
-fig = px.scatter_mapbox(
-    first_borne_data,
-    lat="Ylatitude",
-    lon="Xlongitude",
-    hover_name="Ylatitude",
-    # hover_data=["Puissance délivrée","Type de prise","Condition d'accès"],
-    # color="Puissance délivrée",
-    color_continuous_scale=px.colors.sequential.YlOrRd,
-    zoom=5
+fig = go.Figure()
+fig.add_trace(
+    go.Scattermapbox(
+        lat=first_borne_data["Ylatitude"],
+        lon=first_borne_data["Xlongitude"],
+        mode="markers",
+        marker=go.scattermapbox.Marker(
+                color=first_borne_data["puiss_max"],
+                size=4,
+                colorscale="Viridis",
+                reversescale=True,
+                colorbar=dict(
+                    title = "Puissance de charge (Kw)",
+                ),
+            ),
     )
-fig.update_layout(mapbox_style="open-street-map")
+)
+fig.update_layout(
+    mapbox=go.layout.Mapbox(
+        bearing=0,
+        center=go.layout.mapbox.Center(
+            lat=46.227638,
+            lon=2.213749
+        ),
+        zoom=5
+    )
+)
+fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
@@ -88,17 +106,34 @@ app.layout = html.Div(children=[
     )
 def update_map_figure(input_value):
     borne_data = create_df_borne(input_value)
-    fig = px.scatter_mapbox(
-        borne_data,
-        lat="Ylatitude",
-        lon="Xlongitude",
-        hover_name="Ylatitude",
-        # hover_data=["Puissance délivrée","Type de prise","Condition d'accès"],
-        # color="Puissance délivrée",
-        color_continuous_scale=px.colors.sequential.YlOrRd,
-        zoom=5
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scattermapbox(
+            lat=borne_data["Ylatitude"],
+            lon=borne_data['Xlongitude'],
+            mode="markers",
+            marker=go.scattermapbox.Marker(
+                color=borne_data["puiss_max"],
+                colorscale="Viridis",
+                size=4,
+                reversescale=True,
+                colorbar=dict(
+                    title = "Puissance de charge (Kw)",
+                ),
+            ),
+        )
     )
-    fig.update_layout(mapbox_style="open-street-map")
+    fig.update_layout(
+    mapbox=go.layout.Mapbox(
+        bearing=0,
+        center=go.layout.mapbox.Center(
+            lat=46.227638,
+            lon=2.213749
+        ),
+        zoom=5
+        )
+    )
+    fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return fig
 
