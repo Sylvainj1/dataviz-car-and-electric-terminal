@@ -18,7 +18,7 @@ import json
 
 
 #geojson du tracé des routes principales francaises
-with open("routes_geojson.json") as geofile:
+with open("routes_compress_all.json") as geofile:
     geojson_layer = json.load(geofile)
 
 
@@ -57,44 +57,45 @@ def create_df_borne(filename):
 first_borne_data = create_df_borne("bornedata.csv")
 
 fig = go.Figure()
-fig.add_trace(
-    go.Scattermapbox(
-        lat=first_borne_data["Ylatitude"],
-        lon=first_borne_data["Xlongitude"],
-        mode="markers",
-        marker=go.scattermapbox.Marker(
-                color=first_borne_data["puiss_max"],
-                size=4,
-                colorscale="Viridis",
-                reversescale=True,
-                colorbar=dict(
-                    title = "Puissance de charge (Kw)",
-                ),
-            ),
-    )
-)
+# fig.add_trace(
+#     go.Scattermapbox(
+#         lat=first_borne_data["Ylatitude"],
+#         lon=first_borne_data["Xlongitude"],
+#         mode="markers",
+#         marker=go.scattermapbox.Marker(
+#                 color=first_borne_data["puiss_max"],
+#                 size=4,
+#                 colorscale="Viridis",
+#                 reversescale=True,
+#                 colorbar=dict(
+#                     title = "Puissance de charge (Kw)",
+#                 ),
+#             ),
+#     )
+# )
 
-fig.update_layout(
-    mapbox=go.layout.Mapbox(
-        bearing=0,
-        center=go.layout.mapbox.Center(
-            lat=46.227638,
-            lon=2.213749
-        ),
-        zoom=5,
-        layers=[]
-    )
-)
-fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
-fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+# fig.update_layout(
+#     mapbox=go.layout.Mapbox(
+#         bearing=0,
+#         center=go.layout.mapbox.Center(
+#             lat=46.227638,
+#             lon=2.213749
+#         ),
+#         zoom=5,
+#         layers=[]
+#     )
+# )
+# fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
 
 
 app = dash.Dash(__name__)
 
+
 app.layout = html.Div(children=[
     html.H1(
-        children= f'Electrique vehicules',
+        children= f'Electriques vehicules',
     ),
     
     dcc.Dropdown(
@@ -114,30 +115,34 @@ app.layout = html.Div(children=[
         value=[]
     ),
 
-    dcc.Loading(
-        id="loading-icon",
-        children=[
-            html.Div(
-                dcc.Graph(
-                    id='map',
-                    figure=fig
-                )
-            ),
-        ]
+    dcc.Graph(
+        id='map',
+        figure=fig
     )
+
+    # dcc.Loading(
+    #     children=[
+    #         dcc.Graph(
+    #                 id='map',
+    #                 figure=fig
+    #             )
+    #     ]
+    # )
 ])
 
 
 @app.callback(
         Output(component_id='map', component_property='figure'),
         [Input(component_id='select-charger-type', component_property='value'),
-        Input(component_id='routes-checkbox', component_property='value')]
+        Input(component_id ='routes-checkbox', component_property='value')]
     )
 
-def update_map_figure(input_value,route_show):
+def update_map_figure(input_value, route_show):
+    print(input_value)
+    print(route_show)
     route = route_show
     layer =[]
-    if 'routesTrue' not in route:
+    if route:
         layer = [
             dict(
                 type="line",
