@@ -10,6 +10,14 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 import pandas as pd
+import geopandas as gpd
+
+import json
+
+
+#geojson du tracé des routes principales francaises
+with open("routes_geojson.json") as geofile:
+    geojson_layer = json.load(geofile)
 
 
 def create_df_borne(filename):
@@ -69,7 +77,16 @@ fig.update_layout(
             lat=46.227638,
             lon=2.213749
         ),
-        zoom=5
+        zoom=5,
+        layers=[
+            dict(
+                type="line",
+                sourcetype="geojson",
+                source=geojson_layer,
+                color='rgb(255,0,0)',
+                opacity=0.3,
+            )
+        ]
     )
 )
 fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
@@ -130,7 +147,16 @@ def update_map_figure(input_value):
             lat=46.227638,
             lon=2.213749
         ),
-        zoom=5
+        zoom=5,
+         layers=[
+            dict(
+                type="line",
+                sourcetype="geojson",
+                source=geojson_layer,
+                color='rgb(255,0,0)',
+                opacity=0.3,
+            )
+        ]
         )
     )
     fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token)

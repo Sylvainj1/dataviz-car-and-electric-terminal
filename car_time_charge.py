@@ -23,7 +23,7 @@ app = dash.Dash(__name__)
 
 app.layout = html.Div(children=[
     html.H1(
-        children= f'Autonomie et temps de recharge des voitures électrique',
+        children= f'Autonomie et temps de recharge des voitures électriques',
     ),
     
     dcc.Dropdown(
