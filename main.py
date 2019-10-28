@@ -15,9 +15,12 @@ import geopandas as gpd
 import json
 
 
+
+
 #geojson du tracé des routes principales francaises
 with open("routes_geojson.json") as geofile:
     geojson_layer = json.load(geofile)
+
 
 
 def create_df_borne(filename):
@@ -130,10 +133,11 @@ app.layout = html.Div(children=[
         [Input(component_id='select-charger-type', component_property='value'),
         Input(component_id='routes-checkbox', component_property='value')]
     )
+
 def update_map_figure(input_value,route_show):
     route = route_show
     layer =[]
-    if 'routesTrue' in route:
+    if 'routesTrue' not in route:
         layer = [
             dict(
                 type="line",
