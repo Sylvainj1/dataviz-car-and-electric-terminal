@@ -70,6 +70,7 @@ fig.add_trace(
             ),
     )
 )
+
 fig.update_layout(
     mapbox=go.layout.Mapbox(
         bearing=0,
@@ -78,19 +79,12 @@ fig.update_layout(
             lon=2.213749
         ),
         zoom=5,
-        layers=[
-            dict(
-                type="line",
-                sourcetype="geojson",
-                source=geojson_layer,
-                color='rgb(255,0,0)',
-                opacity=0.3,
-            )
-        ]
+        layers=[]
     )
 )
 fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
 
 
 app = dash.Dash(__name__)
@@ -109,19 +103,47 @@ app.layout = html.Div(children=[
         ],
         value= "bornedata.csv"
     ),
+    dcc.Checklist(
+        id='routes-checkbox',
+        options=[
+            {'label': 'Afficher les routes', 'value': 'routesTrue'}
+        ],
+        value=[]
+    ),
 
-    dcc.Graph(
-        id='map',
-        figure=fig
+    dcc.Loading(
+        id="loading-icon",
+        children=[
+            html.Div(
+                dcc.Graph(
+                    id='map',
+                    figure=fig
+                )
+            ),
+        ]
     )
 ])
 
 
 @app.callback(
         Output(component_id='map', component_property='figure'),
-        [Input(component_id='select-charger-type', component_property='value')]
+        [Input(component_id='select-charger-type', component_property='value'),
+        Input(component_id='routes-checkbox', component_property='value')]
     )
-def update_map_figure(input_value):
+def update_map_figure(input_value,route_show):
+    route = route_show
+    layer =[]
+    if 'routesTrue' in route:
+        layer = [
+            dict(
+                type="line",
+                sourcetype="geojson",
+                source=geojson_layer,
+                color='rgb(255,0,0)',
+                opacity=0.3,
+            )
+        ]
+
     borne_data = create_df_borne(input_value)
     fig = go.Figure()
     fig.add_trace(
@@ -148,18 +170,11 @@ def update_map_figure(input_value):
             lon=2.213749
         ),
         zoom=5,
-         layers=[
-            dict(
-                type="line",
-                sourcetype="geojson",
-                source=geojson_layer,
-                color='rgb(255,0,0)',
-                opacity=0.3,
-            )
-        ]
+        layers=layer
         )
     )
-    fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token)
+
+    fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return fig
 
