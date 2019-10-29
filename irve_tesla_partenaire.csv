@@ -1,4 +1,4 @@
-n_amenageur;n_operateur;n_enseigne;ID_station;n_station;ad_station;code_insee;Xlongitude;Xlatitude;nbre_pdc;ID_pdc;puiss_max;type_prise;acces_recharge;accessibilit�;observations;date_maj
+n_amenageur;n_operateur;n_enseigne;ID_station;n_station;ad_station;code_insee;Xlongitude;Ylatitude;nbre_pdc;ID_pdc;puiss_max;type_prise;acces_recharge;accessibilite;observations;date_maj
 A Cheda;A Cheda;TESLA Recharge � Destination;;A Cheda; Cavallo Morto, Bonifacio,  20169 France;2A041;9.170151;41.405677;4;;7;T2;gratuit Tesla;selon plages horaires;R�serv� � la client�le de l��tablissement - compatible uniquement avec les v�hicules Tesla (hors Roadster) ;20181130
 A Cheda;A Cheda;TESLA Recharge � Destination;;A Cheda; Cavallo Morto, Bonifacio,  20169 France;2A041;9.170151;41.405677;4;;7;T2;gratuit Tesla;selon plages horaires;R�serv� � la client�le de l��tablissement - compatible uniquement avec les v�hicules Tesla (hors Roadster) ;20181130
 A Cheda;A Cheda;TESLA Recharge � Destination;;A Cheda; Cavallo Morto, Bonifacio,  20169 France;2A041;9.170151;41.405677;4;;7;T2;se renseigner aupr�s de l'�tablissement;selon plages horaires;R�serv� � la client�le de l��tablissement;20181130

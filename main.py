@@ -47,9 +47,14 @@ borne_public_dataframe = borne_public_dataframe.rename(columns={"Puissance déli
 
 
 
-borne_tesla = pd.read_csv("irve_tesla.csv",sep=';', encoding="utf-8")
-borne_tesla_dataframe = borne_tesla.drop(columns="ID_station")
-borne_tesla_dataframe = borne_tesla_dataframe.rename(columns={"Xlatitude":"Ylatitude"})
+borne_tesla_partenaire = pd.read_csv("irve_tesla_partenaire.csv",sep=';', encoding="utf-8")
+borne_tesla_partenaire_dataframe = borne_tesla_partenaire.drop(columns="ID_station")
+borne_tesla_partenaire_dataframe = borne_tesla_partenaire_dataframe.rename(columns={"Xlatitude":"Ylatitude"})
+
+borne_tesla_supercharger = pd.read_csv("irve-tesla-supercharger.csv",sep=';', encoding="utf-8")
+borne_tesla_supercharger_dataframe = borne_tesla_supercharger.drop(columns="ID_station")
+
+borne_tesla_dataframe = pd.concat([borne_tesla_partenaire_dataframe, borne_tesla_supercharger_dataframe], ignore_index=True)
 
 
 borne_ionity = pd.read_csv("irve_ionity.csv",sep=';',na_values = 'nan', encoding="UTF-8")
@@ -96,7 +101,7 @@ app.layout = html.Div(children=[
         id='select-charger-type',
         style={"width":300,"display": "inline-block"},
         options=[
-            {'label': 'Tesla Superchargeur', 'value': "irve_tesla.csv"},
+            {'label': 'Tesla Superchargeur & Partenaires Tesla', 'value': "irve_tesla.csv"},
             {'label': 'Ionity Fast chargeur', 'value': 'irve_ionity.csv'},
             {'label': 'Bornes publiques', 'value': "bornedata.csv"},
         ],
@@ -122,9 +127,27 @@ app.layout = html.Div(children=[
     dcc.Graph(
         id='car_evolution',
         figure=car_evolution.construct_car_evolution()
-    )
+    ),
 
-
+    html.Div(
+        id="data-link",
+        children=[
+            html.P("Lien vers les jeux de données utilisés : "),
+            html.A("Evolution du nombre de points de recharge", href="https://data.enedis.fr/explore/dataset/nombre-total-de-points-de-charge/information/?flg=fr&sort=-trimestre",target="_blank"),
+            html.Br(),
+            html.A("Data des bornes electriques", href="https://public.opendatasoft.com/explore/dataset/fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve/information/?flg=fr",target="_blank"),
+            html.Br(),
+            html.A("Superchargeur Tesla", href="https://www.data.gouv.fr/fr/datasets/stations-supercharger-tesla/",target="_blank"),
+            html.Br(),
+            html.A("Partenaires Tesla", href="https://www.data.gouv.fr/fr/datasets/recharge-a-destination-tesla/",target="_blank"),
+            html.Br(),
+            html.A("Superchargeur Ionity", href="https://www.data.gouv.fr/fr/datasets/stations-de-recharge-ionity/",target="_blank"),
+            html.Br(),
+            html.A("Reseau routier francais", href="https://www.data.gouv.fr/fr/datasets/bornage-du-reseau-routier-national/",target="_blank"),
+            html.P("Données des véhicules electriques scrapés depuis ce lien grâce en utilisant beautiful soup"),
+            html.A("Données véhicules electriques", href="https://ev-database.org/compare/newest-upcoming-electric-vehicle",target="_blank"),
+        ]
+    ),
 
     #bug avec le loading
     # dcc.Loading(
@@ -166,9 +189,9 @@ def update_map_figure(input_value, route_show):
             mode="markers",
             marker=go.scattermapbox.Marker(
                 color=borne_data["puiss_max"],
-                colorscale="Viridis",
+                colorscale="Picnic",
                 size=4,
-                reversescale=True,
+                reversescale=False, #inverse le sens du colorscale
                 colorbar=dict(
                     title = "Puissance de charge (Kw)",
                 ),
