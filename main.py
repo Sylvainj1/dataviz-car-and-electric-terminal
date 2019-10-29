@@ -149,7 +149,7 @@ app.layout = html.Div(children=[
         ]
     ),
 
-    #bug avec le loading
+    #bug avec le loading 
     # dcc.Loading(
     #     children=[
     #         dcc.Graph(
