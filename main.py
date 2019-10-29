@@ -75,12 +75,26 @@ fig = go.Figure()
 app = dash.Dash(__name__)
 
 app.layout = html.Div(children=[
-    html.H1(
-        children= f'Electriques vehicules',
+    html.Div([
+        html.H1(
+        children= f'Passer au tout électrique ?',
+        style={"text-align":"center",}
+    ),
+    html.P(
+        '''
+        Aujourd'hui nous entendons beaucoup parler des voitures électriques, notamment face
+        à l'urgence écologique. Mais beaucoup de questions se posent lorsque l'on considère acheter un véhicule electrique :
+        Y a t-il assez de chargeurs ? Quel est le temps de charge ? Quelle autonomie dois-je considerer ?
+        Est t'il le temps pour vous de passer au tout électrique et laisser votre bon vieux thermique de coté ?'''
     ),
     
-    dcc.Dropdown(
+
+    ]),
+    
+    html.Div([
+        dcc.Dropdown(
         id='select-charger-type',
+        style={"width":300,"display": "inline-block"},
         options=[
             {'label': 'Tesla Superchargeur', 'value': "irve_tesla.csv"},
             {'label': 'Ionity Fast chargeur', 'value': 'irve_ionity.csv'},
@@ -90,14 +104,18 @@ app.layout = html.Div(children=[
     ),
     dcc.Checklist(
         id='routes-checkbox',
+        style={"display": "inline-block","margin-left": 60,},
         options=[
             {'label': 'Afficher les routes', 'value': 'routesTrue'}
         ],
         value=[]
     ),
 
+    ]),
+
     dcc.Graph(
         id='map',
+        style={"margin-top":50},
         figure=fig
     ),
 
