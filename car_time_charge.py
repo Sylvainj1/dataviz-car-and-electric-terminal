@@ -7,6 +7,15 @@ import dash
 
 file ="electric_vehicules_dataset.csv"
 car = pd.read_csv(file,sep=";", encoding="UTF-8")
+
+remove_trailing_space = []
+
+for car_name in car["name"].tolist():
+    car_name = car_name.strip()
+    remove_trailing_space.append(car_name)
+
+car["name"] = remove_trailing_space
+
 car=car.sort_values("name")
 carList=car.set_index("name",inplace=False)
 
@@ -23,7 +32,7 @@ app.layout = html.Div(children=[
     id="selectbox",
     options=[{'label': i, 'value': i} for i in car["name"]],
     multi=True,
-    value= 'Lightyear One '
+    value= ['Lightyear One']
     ),
 
     dcc.Graph(
@@ -37,16 +46,16 @@ app.layout = html.Div(children=[
         [Input(component_id='selectbox', component_property='value'),]
     )
 def update_autonomy_figure(input_value):
-    xName=[]
-    xName.append(input_value)
-    yRange=[carList.loc[input_value]["range"] for i in carList]
+    xName=input_value
+    yRange=[carList.loc[i,"range"] for i in input_value]
     
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
             x = xName, 
             y=yRange, 
-            name="Autonomie de la voiture")
+            # name="Autonomie de la voiture"
+            )
     )
     return fig
 
