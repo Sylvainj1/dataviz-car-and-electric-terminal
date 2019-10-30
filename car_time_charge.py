@@ -1,5 +1,6 @@
 import pandas as pd
 import dash_core_components as dcc
+from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import dash_html_components as html
 import dash
@@ -7,17 +8,9 @@ import dash
 file ="electric_vehicules_dataset.csv"
 car = pd.read_csv(file,sep=";", encoding="UTF-8")
 car=car.sort_values("name")
+carList=car.set_index("name",inplace=False)
 
-x=car["name"]
-yRange=car["range"]
-fig = go.Figure(go.Bar(x =x, y=yRange, name="Autonomie de la voiture"))
-    
-
-def carList(car):
-    options=[]
-    for i in car["name"]:
-        options.append({'label':i,'value':i})
-    return options
+fig=go.Figure()
 
 app = dash.Dash(__name__)
 
@@ -28,8 +21,9 @@ app.layout = html.Div(children=[
     
     dcc.Dropdown(
     id="selectbox",
-    options=carList(car),
-    multi=True
+    options=[{'label': i, 'value': i} for i in car["name"]],
+    multi=True,
+    value= 'Lightyear One '
     ),
 
     dcc.Graph(
@@ -37,5 +31,24 @@ app.layout = html.Div(children=[
         figure=fig
     ),
 ])
+
+@app.callback(
+        Output(component_id='autonomy', component_property='figure'),
+        [Input(component_id='selectbox', component_property='value'),]
+    )
+def update_autonomy_figure(input_value):
+    xName=[]
+    xName.append(input_value)
+    yRange=[carList.loc[input_value]["range"] for i in carList]
+    
+    fig = go.Figure()
+    fig.add_trace(
+        go.Bar(
+            x = xName, 
+            y=yRange, 
+            name="Autonomie de la voiture")
+    )
+    return fig
+
 
 app.run_server(debug=True)
