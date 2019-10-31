@@ -7,7 +7,6 @@ import dash
 
 file ="electric_vehicules_dataset.csv"
 car = pd.read_csv(file,sep=";", encoding="UTF-8")
-
 remove_trailing_space = []
 
 for car_name in car["name"].tolist():
@@ -27,12 +26,16 @@ app.layout = html.Div(children=[
     html.H1(
         children= f'Autonomie et temps de recharge des voitures électriques',
     ),
-    
+
+    html.P(
+        "Sélectionner une voiture"
+    ),
+
     dcc.Dropdown(
     id="selectbox",
     options=[{'label': i, 'value': i} for i in car["name"]],
     multi=True,
-    value= ['Lightyear One']
+    value= ['Audi Q4 e-tron']
     ),
 
     dcc.Graph(
@@ -48,15 +51,19 @@ app.layout = html.Div(children=[
 def update_autonomy_figure(input_value):
     xName=input_value
     yRange=[carList.loc[i,"range"] for i in input_value]
-    
     fig = go.Figure()
     fig.add_trace(
         go.Bar(
             x = xName, 
             y=yRange, 
+            text= yRange,
+            textposition="auto",
             # name="Autonomie de la voiture"
+
             )
     )
+    
+    fig.update_traces(marker_color='rgb(119,136,153)', marker_line_color='rgb(112,128,144)',marker_line_width=1.5, opacity=0.6)
     return fig
 
 
