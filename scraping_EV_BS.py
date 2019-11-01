@@ -6,9 +6,18 @@ from bs4 import BeautifulSoup
 
 def scrap_EV(url):
 
-    # url = urllib.request.urlopen(url)
-    # data = url.read().decode('utf-8')
-    request = requests.get(url) # on requete la page
+    proxyDict = {}
+
+    #decommenter ces lignes pour contourner le proxy de l'esiee et commenter la ligne 21
+    # proxy_adress = 'http://147.215.1.189:3128/'
+
+    # proxyDict = {
+    #     "http" : proxy_adress,
+    #     "https" : proxy_adress
+    # }
+
+    request = requests.get(url, proxies=proxyDict) # on requete la page
+
     soup = BeautifulSoup(request.text,"html.parser") #on parse la page en utilisant le parser html par defaut de python
     ev_data_container = soup.find_all('div', class_ = "data-wrapper") # on créer une liste contenant toutes les données des voitures contenu chacune 
     # dans un bloc div avec la classe data-wrapper
@@ -77,5 +86,5 @@ if __name__ == '__main__':
     #enfin, on converti notre df en csv (si besoin)
     #dans le projet python nous avons directement utilisé la dataframe plutot que de convertir en csv 
     print("converting dataframe to csv local file...")
-    dataframe.to_csv('electric_vehicules_dataset.csv', sep = ';', index= False)
+    dataframe.to_csv('electric_vehicules_dataseeeeeet.csv', sep = ';', index= False)
     print("conversion finished")
