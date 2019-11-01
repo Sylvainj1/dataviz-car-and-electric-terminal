@@ -4,19 +4,9 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 
-def scrap_EV(url):
+def scrap_EV(url,proxy):
 
-    proxyDict = {}
-
-    #decommenter ces lignes pour contourner le proxy de l'esiee
-    # proxy_adress = 'http://147.215.1.189:3128/'
-
-    # proxyDict = {
-    #     "http" : proxy_adress,
-    #     "https" : proxy_adress
-    # }
-
-    request = requests.get(url, proxies=proxyDict) # on requete la page
+    request = requests.get(url, proxies=proxy) # on requete la page
 
     soup = BeautifulSoup(request.text,"html.parser") #on parse la page en utilisant le parser html par defaut de python
     ev_data_container = soup.find_all('div', class_ = "data-wrapper") # on créer une liste contenant toutes les données des voitures contenu chacune 
@@ -81,7 +71,7 @@ def scrap_EV(url):
 
 
 if __name__ == '__main__':
-    dataframe = scrap_EV('https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient')
+    dataframe = scrap_EV('https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient',proxy={})
 
     #enfin, on converti notre df en csv (si besoin)
     #dans le projet python nous avons directement utilisé la dataframe plutot que de convertir en csv 

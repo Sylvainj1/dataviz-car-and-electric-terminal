@@ -75,8 +75,20 @@ def select_dataframe(filename):
 
 
 
+
+proxyDict = {}
+
+#decommenter ces lignes pour contourner le proxy de l'esiee
+# proxy_adress = 'http://147.215.1.189:3128/'
+
+# proxyDict = {
+#     "http" : proxy_adress,
+#     "https" : proxy_adress
+# }
+
+
 #recupération des données sur les voitures depuis un site web
-car = scraping.scrap_EV("https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient")
+car = scraping.scrap_EV("https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient",proxy=proxyDict)
 
 remove_trailing_space = []
 
