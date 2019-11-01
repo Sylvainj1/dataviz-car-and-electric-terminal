@@ -21,7 +21,7 @@ car["name"] = remove_trailing_space
 car=car.sort_values("name")
 carList=car.set_index("name",inplace=False)
 
-fig=go.Figure()
+car_time_fig=go.Figure()
 
 app = dash.Dash(__name__)
 
@@ -43,7 +43,7 @@ app.layout = html.Div(children=[
 
     dcc.Graph(
         id='autonomy',
-        figure=fig
+        figure=car_time_fig
     ),
 ])
 
@@ -54,8 +54,8 @@ app.layout = html.Div(children=[
 def update_autonomy_figure(input_value):
     xName=input_value
     yRange=[carList.loc[i,"range"] for i in input_value]
-    fig = go.Figure()
-    fig.add_trace(
+    car_time_fig = go.Figure()
+    car_time_fig.add_trace(
         go.Bar(
             x = xName, 
             y=yRange, 
@@ -66,8 +66,8 @@ def update_autonomy_figure(input_value):
             )
     )
     
-    fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6)
-    return fig
+    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6)
+    return car_time_fig
 
 
 app.run_server(debug=True)

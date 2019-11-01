@@ -8,7 +8,7 @@ def scrap_EV(url):
 
     proxyDict = {}
 
-    #decommenter ces lignes pour contourner le proxy de l'esiee et commenter la ligne 21
+    #decommenter ces lignes pour contourner le proxy de l'esiee
     # proxy_adress = 'http://147.215.1.189:3128/'
 
     # proxyDict = {

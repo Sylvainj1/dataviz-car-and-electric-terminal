@@ -14,6 +14,8 @@ import geopandas as gpd
 
 import json
 
+import scraping_EV_BS as scraping
+
 import car_evolution
 
 
@@ -46,7 +48,7 @@ borne_public_dataframe["Xlongitude"] = lon
 borne_public_dataframe = borne_public_dataframe.rename(columns={"Puissance délivrée":"puiss_max"})
 
 
-
+#certain nom de columns on été renommés pour une homogénéité entre les df
 borne_tesla_partenaire = pd.read_csv("irve_tesla_partenaire.csv",sep=';', encoding="utf-8")
 borne_tesla_partenaire_dataframe = borne_tesla_partenaire.drop(columns="ID_station")
 borne_tesla_partenaire_dataframe = borne_tesla_partenaire_dataframe.rename(columns={"Xlatitude":"Ylatitude"})
@@ -73,9 +75,26 @@ def select_dataframe(filename):
 
 
 
+#recupération des données sur les voitures depuis un site web
+car = scraping.scrap_EV("https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient")
+
+remove_trailing_space = []
+
+for car_name in car["name"].tolist():
+    car_name = car_name.strip()
+    remove_trailing_space.append(car_name)
+
+car["name"] = remove_trailing_space
+
+car=car.sort_values("name")
+carList=car.set_index("name",inplace=False)
+
+
+
 #figure vide car app.Callback est appelé à l'initialisation de l'appli et créer la figure
-#pas besoin donc de créer une figure entière ici
+#pas besoin donc de créer une figure entière, ici on créer donc une figure vide
 fig = go.Figure()
+car_time_fig=go.Figure()
 
 app = dash.Dash(__name__)
 
@@ -128,6 +147,28 @@ app.layout = html.Div(children=[
         id='car_evolution',
         figure=car_evolution.construct_car_evolution()
     ),
+
+    html.Div(children=[
+        html.H1(
+            children= f'Autonomie et temps de recharge des voitures électriques',
+        ),
+
+        html.P(
+            "Sélectionnez une voiture"
+        ),
+
+        dcc.Dropdown(
+            id="selectbox",
+            options=[{'label': i, 'value': i} for i in car["name"]],
+            multi=True,
+            value= ['Audi Q4 e-tron']
+        ),
+
+        dcc.Graph(
+            id='autonomy',
+            figure=car_time_fig
+        ),
+    ]),
 
     html.Div(
         id="data-link",
@@ -213,6 +254,29 @@ def update_map_figure(input_value, route_show):
     fig.update_layout(mapbox_style="dark", mapbox_accesstoken=token, height=700)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return fig
+
+
+@app.callback(
+        Output(component_id='autonomy', component_property='figure'),
+        [Input(component_id='selectbox', component_property='value'),]
+    )
+def update_autonomy_figure(input_value):
+    xName=input_value
+    yRange=[carList.loc[i,"range"] for i in input_value]
+    car_time_fig = go.Figure()
+    car_time_fig.add_trace(
+        go.Bar(
+            x = xName, 
+            y=yRange, 
+            text= yRange,
+            textposition="auto",
+            # name="Autonomie de la voiture"
+
+            )
+    )
+    
+    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6)
+    return car_time_fig
 
 
 app.run_server(debug=True)
