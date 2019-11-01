@@ -63,7 +63,7 @@ def update_autonomy_figure(input_value):
             )
     )
     
-    fig.update_traces(marker_color='rgb(119,136,153)', marker_line_color='rgb(112,128,144)',marker_line_width=1.5, opacity=0.6)
+    fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6)
     return fig
 
 
