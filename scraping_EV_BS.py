@@ -41,7 +41,7 @@ def scrap_EV(url):
         if ev_container.find('span', attrs = {'title' : 'Price in Germany before incentives'}).text == 'N/A':
             ev_price = 'N/A'
         else:
-            ev_price = float(ev_container.find('span', attrs = {'title' : 'Price in Germany before incentives'}).text.split('€')[1].replace(',','.')) #il faut replacer la virgule par unpoint pour pouvoir convertir en float
+            ev_price = float(ev_container.find('span', attrs = {'title' : 'Price in Germany before incentives'}).text.split('€')[1].replace(',','.')) #il faut replacer la virgule par un point pour pouvoir convertir en float
 
 
         ev_names.append(ev_name)
@@ -67,17 +67,15 @@ def scrap_EV(url):
         'price' : ev_prices
     })
 
-    #enfin, on converti notre df en csv
-    print("converting dataframe to csv local file...")
-    df.to_csv('electric_vehicules_dataset', sep = ';', index= False)
-    print("conversion finished")
+    return df
 
-
-
-def main(url):
-    scrap_EV(url)
-    return None
 
 
 if __name__ == '__main__':
-    main('https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient')
+    dataframe = scrap_EV('https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient')
+
+    #enfin, on converti notre df en csv (si besoin)
+    #dans le projet python nous avons directement utilisé la dataframe plutot que de convertir en csv 
+    print("converting dataframe to csv local file...")
+    dataframe.to_csv('electric_vehicules_dataset.csv', sep = ';', index= False)
+    print("conversion finished")

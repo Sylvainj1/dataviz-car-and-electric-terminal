@@ -5,8 +5,11 @@ import plotly.graph_objects as go
 import dash_html_components as html
 import dash
 
-file ="electric_vehicules_dataset.csv"
-car = pd.read_csv(file,sep=";", encoding="UTF-8")
+import scraping_EV_BS as scraping
+
+
+car = scraping.scrap_EV("https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient")
+
 remove_trailing_space = []
 
 for car_name in car["name"].tolist():
