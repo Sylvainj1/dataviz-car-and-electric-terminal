@@ -46,7 +46,7 @@ for coord in df_tolist:
 borne_public_dataframe["Ylatitude"] = lat
 borne_public_dataframe["Xlongitude"] = lon
 borne_public_dataframe = borne_public_dataframe.rename(columns={"Puissance délivrée":"puiss_max"})
-
+borne_power_list=set(borne_public_dataframe["puiss_max"])
 
 #certain nom de columns on été renommés pour une homogénéité entre les df
 borne_tesla_partenaire = pd.read_csv("irve_tesla_partenaire.csv",sep=';', encoding="utf-8")
@@ -100,7 +100,6 @@ car["name"] = remove_trailing_space
 
 car=car.sort_values("name")
 carList=car.set_index("name",inplace=False)
-
 
 
 #figure vide car app.Callback est appelé à l'initialisation de l'appli et créer la figure
@@ -164,17 +163,23 @@ app.layout = html.Div(children=[
         html.H1(
             children= f'Autonomie et temps de recharge des voitures électriques',
         ),
-
-        html.P(
-            "Sélectionnez une voiture"
+        html.Label(
+            ["Sélectionnez une voiture",
+            dcc.Dropdown(
+                id="selectbox",
+                options=[{'label': i, 'value': i} for i in car["name"]],
+                multi=True,
+                value= ['Audi Q4 e-tron']
+                ),]
         ),
-
-        dcc.Dropdown(
-            id="selectbox",
-            options=[{'label': i, 'value': i} for i in car["name"]],
-            multi=True,
-            value= ['Audi Q4 e-tron']
-        ),
+        html.Label(
+            ["Sélectionnez la puissance de la borne en kW",
+            dcc.Dropdown(
+                id="bornepower",
+                options=[{'label': i, 'value': i} for i in sorted(borne_power_list)],
+                value=3
+            ),
+        ]),
 
         dcc.Graph(
             id='autonomy',
@@ -270,17 +275,20 @@ def update_map_figure(input_value, route_show):
 
 @app.callback(
         Output(component_id='autonomy', component_property='figure'),
-        [Input(component_id='selectbox', component_property='value'),]
+        [Input(component_id='selectbox', component_property='value'),
+        Input(component_id='bornepower',component_property='value'),]
     )
-def update_autonomy_figure(input_value):
+def update_autonomy_figure(input_value,input_borne_power):
     xName=input_value
     yRange=[carList.loc[i,"range"] for i in input_value]
+    battery=[carList.loc[i,"battery"] for i in input_value]
+
     car_time_fig = go.Figure()
     car_time_fig.add_trace(
         go.Bar(
             x = xName, 
             y=yRange, 
-            text= yRange,
+            text= battery,
             textposition="auto",
             # name="Autonomie de la voiture"
 
