@@ -148,9 +148,10 @@ app.layout = html.Div(children=[
             id='select-charger-type',
             style={"width":300, "font-family":"Arial"},
             options=[
-                {'label': 'Tesla Superchargeur & Partenaires Tesla', 'value': "irve_tesla.csv"},
-                {'label': 'Ionity Fast chargeur', 'value': 'irve_ionity.csv'},
                 {'label': 'Bornes publiques', 'value': "bornedata.csv"},
+                {'label': 'Ionity Fast chargeur', 'value': 'irve_ionity.csv'},
+                {'label': 'Tesla Superchargeur & Partenaires Tesla', 'value': "irve_tesla.csv"},
+
             ],
             value="bornedata.csv",
             clearable=False
@@ -406,7 +407,7 @@ def update_autonomy_figure(input_value, input_borne_power):
                                opacity=0.6,
                                )
     car_time_fig.update_layout(
-        yaxis_title="Autonomie (en Km)",
+        yaxis_title="Autonomie (en km)",
     )
     return car_time_fig
 
