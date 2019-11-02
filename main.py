@@ -46,6 +46,7 @@ for coord in df_tolist:
 borne_public_dataframe["Ylatitude"] = lat
 borne_public_dataframe["Xlongitude"] = lon
 borne_public_dataframe = borne_public_dataframe.rename(columns={"Puissance délivrée":"puiss_max"})
+
 borne_power_list=set(borne_public_dataframe["puiss_max"])
 
 #certain nom de columns on été renommés pour une homogénéité entre les df
@@ -177,7 +178,8 @@ app.layout = html.Div(children=[
             dcc.Dropdown(
                 id="bornepower",
                 options=[{'label': i, 'value': i} for i in sorted(borne_power_list)],
-                value=3
+                value=3,
+                clearable=False
             ),
         ]),
 
@@ -279,16 +281,25 @@ def update_map_figure(input_value, route_show):
         Input(component_id='bornepower',component_property='value'),]
     )
 def update_autonomy_figure(input_value,input_borne_power):
+    # print(type(float(input_borne_power)))
     xName=input_value
     yRange=[carList.loc[i,"range"] for i in input_value]
-    battery=[carList.loc[i,"battery"] for i in input_value]
+    battery=[float(carList.loc[i,"battery"]) for i in input_value]
+
+    #évite une erreur si l'utilisateur efface la puissance de la borne
+    if input_borne_power == None:
+        borne_power = 1.0
+    else:
+        borne_power = float(input_borne_power)
+    
+    charge_time = [(b/borne_power) for b in battery]
 
     car_time_fig = go.Figure()
     car_time_fig.add_trace(
         go.Bar(
             x = xName, 
             y=yRange, 
-            text= battery,
+            text= charge_time,
             textposition="auto",
             # name="Autonomie de la voiture"
 
