@@ -240,6 +240,29 @@ app.layout = html.Div(children=[
             id='autonomy',
             figure=car_time_fig
         ),
+        html.P(
+            '''
+            Le temps de recharge est estimé en fonction de la capacité de
+            la batterie et de la puissance du chargeur.
+            Les véhicules assez haut de gamme possèdent l'option
+            'fastcharge' qui permet de décupler
+            la puissance de charge du véhicules entre un certain
+            pourcentage de batterie.
+            ''',
+            style={"font-family":"Arial"}
+        ),
+        html.P(
+            '''
+            Les superchargeur Tesla et Ionity ne sont pas incluent dans
+            la selection, ces chargeurs possèdent une puissance de charge minimum
+            de 150 Kw permettant de charger très rapidement les véhicules,
+            descendant souvent en dessous de la barres de 35min pour une
+            charge complète. A titre d'exemple la nouvelle porsche taycan 
+            recharge 80 pourcent en 15mins sur un chargeur ionity de 230 Kw 
+            ''',
+            style={"font-family":"Arial"}
+        ),
+        html.Br()
     ]),
 
     html.Div(
