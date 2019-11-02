@@ -1,4 +1,8 @@
 # -*coding:utf8 *-
+"""
+author : Jeremy Surget and Sylvain Jiang
+pylint 6.63/10
+"""
 import json
 
 import plotly.graph_objects as go
@@ -51,12 +55,15 @@ borne_power_list = set(borne_public_dataframe["puiss_max"])
 #certain nom de columns on été renommés pour une homogénéité entre les df
 borne_tesla_partenaire = pd.read_csv("irve_tesla_partenaire.csv", sep=';', encoding="utf-8")
 borne_tesla_partenaire_dataframe = borne_tesla_partenaire.drop(columns="ID_station")
-borne_tesla_partenaire_dataframe = borne_tesla_partenaire_dataframe.rename(columns={"Xlatitude":"Ylatitude"})
+borne_tesla_partenaire_dataframe = borne_tesla_partenaire_dataframe.rename(
+    columns={"Xlatitude":"Ylatitude"})
 
 borne_tesla_supercharger = pd.read_csv("irve-tesla-supercharger.csv", sep=';', encoding="utf-8")
 borne_tesla_supercharger_dataframe = borne_tesla_supercharger.drop(columns="ID_station")
 
-borne_tesla_dataframe = pd.concat([borne_tesla_partenaire_dataframe, borne_tesla_supercharger_dataframe], ignore_index=True)
+borne_tesla_dataframe = pd.concat([borne_tesla_partenaire_dataframe,
+                                   borne_tesla_supercharger_dataframe],
+                                  ignore_index=True)
 
 
 borne_ionity = pd.read_csv("irve_ionity.csv", sep=';', na_values='nan', encoding="UTF-8")
@@ -64,6 +71,10 @@ borne_ionity_dataframe = borne_ionity.dropna()
 
 
 def select_dataframe(filename):
+    """
+    Permet de selectionner un dataset
+    pour l'affichage sur la carte
+    """
     if filename == "bornedata.csv":
         return borne_public_dataframe
 
@@ -90,7 +101,10 @@ proxyDict = {}
 
 
 #recupération des données sur les voitures depuis un site web
-car = scraping.scrap_EV("https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient", proxy=proxyDict)
+car = scraping.scrap_EV(
+    "https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient",
+    proxy=proxyDict
+    )
 
 remove_trailing_space = []
 
@@ -120,9 +134,12 @@ app.layout = html.Div(children=[
         html.P(
             '''
             Aujourd'hui nous entendons beaucoup parler des voitures électriques, notamment face
-            à l'urgence écologique. Mais beaucoup de questions se posent lorsque l'on considère acheter un véhicule electrique :
-            Y a t-il assez de chargeurs ? Quel est le temps de charge ? Quelle autonomie dois-je considerer ?
-            Est t'il le temps pour vous de passer au tout électrique et laisser votre bon vieux thermique de coté ?''',
+            à l'urgence écologique. Mais beaucoup de questions se posent lorsque
+            l'on considère acheter un véhicule electrique :
+            Y a t-il assez de chargeurs ? Quel est le temps de charge ?
+            Quelle autonomie dois-je considerer ?
+            Est t'il le temps pour vous de passer au tout électrique et
+            laisser votre bon vieux thermique de coté ?''',
             style={"font-family":"Arial", "font-size":18}
         ),
     ]),
@@ -156,12 +173,18 @@ app.layout = html.Div(children=[
 
     html.P(
         '''
-        Les grandes villes Francaises sont plutot bien servie au niveau des bornes de recharges, mais le plus important ici
-        est de voir que les grands axes routiers sont très bien desservis. Il est tout a fait possible de partir de Paris pour aller dans le sud
-        de la France sans tomber à sec d'essence étant donné que les grandes autoroutes possèdent sur leur chemin de nombreuses borne de recharge.
-        Les bornes Tesla et ses partenaires sont très bien placés et permettent au client de la marque de bénéficier des bornes à charge rapide de la marque.
-        Le reseaux Ionoty quant à lui est moins developpé en France, néanmoins il a l'avantage de pouvoir charger n'importe quel véhicule, jusqu'à 350 kW
-        pour les véhicules le supportant, ce qui permet de charger une voiture comme par exemple une Porsche Taycan en moins de 40min pour 10% à 100%.
+        Les grandes villes Francaises sont plutot bien servie au niveau
+        des bornes de recharges, mais le plus important ici
+        est de voir que les grands axes routiers sont très bien desservis.
+        Il est tout a fait possible de partir de Paris pour aller dans le sud
+        de la France sans tomber à sec d'essence étant donné que les grandes
+        autoroutes possèdent sur leur chemin de nombreuses borne de recharge.
+        Les bornes Tesla et ses partenaires sont très bien placés et permettent
+        au client de la marque de bénéficier des bornes à charge rapide de la marque.
+        Le reseaux Ionoty quant à lui est moins developpé en France, néanmoins il a
+        l'avantage de pouvoir charger n'importe quel véhicule, jusqu'à 350 kW
+        pour les véhicules le supportant, ce qui permet de charger une voiture comme
+        par exemple une Porsche Taycan en moins de 40min pour 10% à 100%.
         ''',
         style={"font-family":"Arial", "font-size":17}
     ),
@@ -200,7 +223,8 @@ app.layout = html.Div(children=[
         ),
         html.Label(
             [
-                html.P("Sélectionnez La puissance de la borne en kW", style={"font-family":"Arial"}),
+                html.P("Sélectionnez La puissance de la borne en kW",
+                       style={"font-family":"Arial"}),
                 dcc.Dropdown(
                     id="bornepower",
                     style={"width":300, "font-family":"Arial"},
@@ -222,19 +246,41 @@ app.layout = html.Div(children=[
         style={"font-family":"Arial"},
         children=[
             html.P("Lien vers les jeux de données utilisés : "),
-            html.A("Evolution du nombre de points de recharge", href="https://data.enedis.fr/explore/dataset/nombre-total-de-points-de-charge/information/?flg=fr&sort=-trimestre", target="_blank"),
+            html.A("Evolution du nombre de points de recharge",
+                   href="https://data.enedis.fr/explore/dataset/nombre-total-de-points-de-charge/information/?flg=fr&sort=-trimestre",
+                   target="_blank"
+                  ),
             html.Br(),
-            html.A("Data des bornes electriques", href="https://public.opendatasoft.com/explore/dataset/fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve/information/?flg=fr", target="_blank"),
+            html.A("Data des bornes electriques",
+                   href="https://public.opendatasoft.com/explore/dataset/fichier-consolide-des-bornes-de-recharge-pour-vehicules-electriques-irve/information/?flg=fr",
+                   target="_blank"),
             html.Br(),
-            html.A("Superchargeur Tesla", href="https://www.data.gouv.fr/fr/datasets/stations-supercharger-tesla/", target="_blank"),
+            html.A("Superchargeur Tesla",
+                   href="https://www.data.gouv.fr/fr/datasets/stations-supercharger-tesla/",
+                   target="_blank"
+                   ),
             html.Br(),
-            html.A("Partenaires Tesla", href="https://www.data.gouv.fr/fr/datasets/recharge-a-destination-tesla/", target="_blank"),
+            html.A("Partenaires Tesla",
+                   href="https://www.data.gouv.fr/fr/datasets/recharge-a-destination-tesla/",
+                   target="_blank"
+                   ),
             html.Br(),
-            html.A("Superchargeur Ionity", href="https://www.data.gouv.fr/fr/datasets/stations-de-recharge-ionity/", target="_blank"),
+            html.A("Superchargeur Ionity",
+                   href="https://www.data.gouv.fr/fr/datasets/stations-de-recharge-ionity/",
+                   target="_blank"
+                   ),
             html.Br(),
-            html.A("Reseau routier francais", href="https://www.data.gouv.fr/fr/datasets/bornage-du-reseau-routier-national/", target="_blank"),
-            html.P("Données des véhicules electriques scrapés depuis ce lien grâce en utilisant beautiful soup"),
-            html.A("Données véhicules electriques", href="https://ev-database.org/compare/newest-upcoming-electric-vehicle", target="_blank"),
+            html.A("Reseau routier francais",
+                   href="https://www.data.gouv.fr/fr/datasets/bornage-du-reseau-routier-national/",
+                   target="_blank"
+                   ),
+            html.P('''Données des véhicules electriques scrapés depuis ce lien
+                   grâce en utilisant beautiful soup'''
+                   ),
+            html.A("Données véhicules electriques",
+                   href="https://ev-database.org/compare/newest-upcoming-electric-vehicle",
+                   target="_blank"
+                   ),
         ]
     ),
 
@@ -256,6 +302,9 @@ app.layout = html.Div(children=[
          Input(component_id='routes-checkbox', component_property='value')]
     )
 def update_map_figure(input_value, route_show):
+    """
+    update de la map suite au callback
+    """
     route = route_show
     layer = []
     if route:
@@ -268,7 +317,7 @@ def update_map_figure(input_value, route_show):
                 opacity=0.3,
             )
         ]
-    
+
     if input_value is None:
         input_value = "bornedata.csv"
 
@@ -316,6 +365,10 @@ def update_map_figure(input_value, route_show):
          Input(component_id='bornepower', component_property='value'),]
     )
 def update_autonomy_figure(input_value, input_borne_power):
+    """
+    update du graphe sur le temps de charge
+    et l'autonomie des vehicules
+    """
     # print(type(float(input_borne_power)))
     x_name = input_value
     y_range = [carList.loc[i, "range"] for i in input_value]
@@ -347,7 +400,11 @@ def update_autonomy_figure(input_value, input_borne_power):
             )
     )
 
-    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue', marker_line_width=1.5, opacity=0.6,)
+    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)',
+                               marker_line_color='blue',
+                               marker_line_width=1.5,
+                               opacity=0.6,
+                               )
     car_time_fig.update_layout(
         yaxis_title="Autonomie (en Km)",
     )
