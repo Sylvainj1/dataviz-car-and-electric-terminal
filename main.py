@@ -114,14 +114,15 @@ app.layout = html.Div(children=[
     html.Div([
         html.H1(
         children= f'Passer au tout électrique ?',
-        style={"text-align":"center",}
+        style={"text-align":"center","font-family":"Courier New"}
     ),
     html.P(
         '''
         Aujourd'hui nous entendons beaucoup parler des voitures électriques, notamment face
         à l'urgence écologique. Mais beaucoup de questions se posent lorsque l'on considère acheter un véhicule electrique :
         Y a t-il assez de chargeurs ? Quel est le temps de charge ? Quelle autonomie dois-je considerer ?
-        Est t'il le temps pour vous de passer au tout électrique et laisser votre bon vieux thermique de coté ?'''
+        Est t'il le temps pour vous de passer au tout électrique et laisser votre bon vieux thermique de coté ?''',
+        style={"font-family":"Arial","font-size":18}
     ),
     
 
@@ -130,17 +131,18 @@ app.layout = html.Div(children=[
     html.Div([
         dcc.Dropdown(
         id='select-charger-type',
-        style={"width":300,"display": "inline-block"},
+        style={"width":300,"font-family":"Arial"},
         options=[
             {'label': 'Tesla Superchargeur & Partenaires Tesla', 'value': "irve_tesla.csv"},
             {'label': 'Ionity Fast chargeur', 'value': 'irve_ionity.csv'},
             {'label': 'Bornes publiques', 'value': "bornedata.csv"},
         ],
-        value= "bornedata.csv"
+        value= "bornedata.csv",
+        clearable=False
     ),
     dcc.Checklist(
         id='routes-checkbox',
-        style={"display": "inline-block","margin-left": 60,},
+        style={"margin-top": 20,"margin-left": 20,"font-family":"Arial"},
         options=[
             {'label': 'Afficher les routes', 'value': 'routesTrue'}
         ],
@@ -155,28 +157,40 @@ app.layout = html.Div(children=[
         figure=fig
     ),
 
+
+    html.Div(children=[
+        html.H1(
+            children= f'Evolution du nombre de bornes de recharge en France',
+            style= {"font-family":"Courier New","margin-top":70}
+        ),
     dcc.Graph(
         id='car_evolution',
         figure=car_evolution.construct_car_evolution()
     ),
+    ]),
 
     html.Div(children=[
         html.H1(
             children= f'Autonomie et temps de recharge des voitures électriques',
+            style= {"font-family":"Courier New"}
         ),
         html.Label(
-            ["Sélectionnez une voiture",
+            [
+            html.P("Sélectionnez une voiture",style={"font-family":"Arial"}),
             dcc.Dropdown(
                 id="selectbox",
+                style={"width":600,"font-family":"Arial"},
                 options=[{'label': i, 'value': i} for i in car["name"]],
                 multi=True,
                 value= ['Audi Q4 e-tron']
                 ),]
         ),
         html.Label(
-            ["Sélectionnez la puissance de la borne en kW",
+            [
+            html.P("Sélectionnez La puissance de la borne en kW",style={"font-family":"Arial"}),
             dcc.Dropdown(
                 id="bornepower",
+                style={"width":300,"font-family":"Arial"},
                 options=[{'label': i, 'value': i} for i in sorted(borne_power_list)],
                 value=3,
                 clearable=False
@@ -191,6 +205,7 @@ app.layout = html.Div(children=[
 
     html.Div(
         id="data-link",
+        style={"font-family":"Arial"},
         children=[
             html.P("Lien vers les jeux de données utilisés : "),
             html.A("Evolution du nombre de points de recharge", href="https://data.enedis.fr/explore/dataset/nombre-total-de-points-de-charge/information/?flg=fr&sort=-trimestre",target="_blank"),
@@ -241,11 +256,14 @@ def update_map_figure(input_value, route_show):
         ]
 
     borne_data = select_dataframe(input_value)
+    puiss = borne_data["puiss_max"]
     fig = go.Figure()
     fig.add_trace(
         go.Scattermapbox(
             lat=borne_data["Ylatitude"],
             lon=borne_data['Xlongitude'],
+            hovertext=puiss,
+            hoverinfo='text',
             mode="markers",
             marker=go.scattermapbox.Marker(
                 color=borne_data["puiss_max"],
@@ -292,21 +310,30 @@ def update_autonomy_figure(input_value,input_borne_power):
     else:
         borne_power = float(input_borne_power)
     
-    charge_time = [(b/borne_power) for b in battery]
+    charge_time = [round(b/borne_power,2) for b in battery]
 
     car_time_fig = go.Figure()
     car_time_fig.add_trace(
         go.Bar(
-            x = xName, 
-            y=yRange, 
+            x= xName, 
+            y= yRange, 
             text= charge_time,
+            hovertext='Temps de recharge en heure',
+            hoverinfo='text',
+            textfont=dict(
+                color="blue",
+                size=14
+            ),
             textposition="auto",
             # name="Autonomie de la voiture"
 
             )
     )
     
-    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6)
+    car_time_fig.update_traces(marker_color='rgb(87, 154, 222)', marker_line_color='blue',marker_line_width=1.5, opacity=0.6,)
+    car_time_fig.update_layout(
+        yaxis_title="Autonomie (en Km)",
+    )
     return car_time_fig
 
 
