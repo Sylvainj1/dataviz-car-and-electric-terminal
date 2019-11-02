@@ -16,7 +16,7 @@ import pandas as pd
 
 
 
-import scraping_EV_BS as scraping
+import scraping_ev_bs as scraping
 
 import car_evolution
 
@@ -101,7 +101,7 @@ proxyDict = {}
 
 
 #recupération des données sur les voitures depuis un site web
-car = scraping.scrap_EV(
+car = scraping.scrap_ev(
     "https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient",
     proxy=proxyDict
     )
