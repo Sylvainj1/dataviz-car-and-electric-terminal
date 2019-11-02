@@ -1,3 +1,10 @@
+/*Nous avions un bug avec le component loading de dash
+le temps de chargement de étant assez long quand on affiche les routes
+nous avons trouvé la solution de directement cibler le css car un classe est ajoutée
+a chaque component qui load suite a un callback
+ce CSS n'est pas de nous mais d'un developpeur de dash qui a partagé ce code sur le forum plotly
+*/
+
 ._dash-loading-callback {
     font-family: sans-serif;
     padding-top: 50px;
