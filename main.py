@@ -114,7 +114,7 @@ app.layout = html.Div(children=[
     html.Div([
         html.H1(
         children= f'Passer au tout électrique ?',
-        style={"text-align":"center","font-family":"Courier New"}
+        style={"text-align":"center","font-family":"Courier New","color":"#3b61d4"}
     ),
     html.P(
         '''
@@ -157,12 +157,27 @@ app.layout = html.Div(children=[
         figure=fig
     ),
 
+    html.P(
+        '''
+        Les grandes villes Francaises sont plutot bien servie au niveau des bornes de recharges, mais le plus important ici
+        est de voir que les grands axes routiers sont très bien desservis. Il est tout a fait possible de partir de Paris pour aller dans le sud
+        de la France sans tomber à sec d'essence étant donné que les grandes autoroutes possèdent sur leur chemin de nombreuses borne de recharge.
+        Les bornes Tesla et ses partenaires sont très bien placés et permettent au client de la marque de bénéficier des bornes à charge rapide de la marque.
+        Le reseaux Ionoty quant à lui est moins developpé en France, néanmoins il a l'avantage de pouvoir charger n'importe quel véhicule, jusqu'à 350 kW
+        pour les véhicules le supportant, ce qui permet de charger une voiture comme par exemple une Porsche Taycan en moins de 40min pour 10% à 100%.
+        ''',
+        style={"font-family":"Arial","font-size":17}
+    ),
+
 
     html.Div(children=[
         html.H1(
             children= f'Evolution du nombre de bornes de recharge en France',
             style= {"font-family":"Courier New","margin-top":70}
         ),
+        html.P('''
+        Le nombre de bornes ne cesse croître pour pouvoir répondre à l'augmentation du nombre de véhicules électriques.
+        ''',style={"font-family":"Arial"}),
     dcc.Graph(
         id='car_evolution',
         figure=car_evolution.construct_car_evolution()
