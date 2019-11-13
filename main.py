@@ -101,10 +101,13 @@ proxyDict = {}
 
 
 #recupération des données sur les voitures depuis un site web
-car = scraping.scrap_ev(
-    "https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient",
-    proxy=proxyDict
-    )
+#grace a notre fonction de scraping
+# car = scraping.scrap_ev(
+#     "https://ev-database.org/compare/efficiency-electric-vehicle-most-efficient",
+#     proxy=proxyDict
+#     )
+
+car = pd.read_csv("electric_vehicules_dataset.csv", sep=';', encoding="UTF-8")
 
 remove_trailing_space = []
 
